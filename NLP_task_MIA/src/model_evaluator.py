@@ -1,15 +1,39 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import classification_report, confusion_matrix
+from tensorflow.keras.callbacks import History
 
 
 class ModelEvaluator:
-    def __init__(self, logs_dir="logs"):
+    """
+    A class to evaluate and visualize the performance of machine learning models.
+    It includes methods to generate classification reports, confusion matrices,
+    plot training histories, and visualize Membership Inference Attack (MIA) results.
+    """
+
+    def __init__(self, logs_dir: str = "logs"):
+        """
+        Initialize the evaluator with a directory to store logs.
+
+        Args:
+            logs_dir (str): The directory where logs and plots will be saved.
+        """
         self.logs_dir = logs_dir
 
-    def evaluate_performance(self, model, x_test, y_test, title="Model"):
+    def evaluate_performance(
+        self, model, x_test: np.ndarray, y_test: np.ndarray, title: str = "Model"
+    ) -> tuple[str, np.ndarray]:
         """
-        Evaluate and log classification performance metrics.
+        Evaluate the classification performance of the model and log the results.
+
+        Args:
+            model: The trained model to evaluate.
+            x_test (np.ndarray): The test input data.
+            y_test (np.ndarray): The true labels for the test data.
+            title (str): The title for the evaluation report and plot.
+
+        Returns:
+            tuple[str, np.ndarray]: The classification report (as a string) and confusion matrix (as a numpy array).
         """
         y_pred = model.predict(x_test)
         y_pred_rounded = np.round(y_pred)
@@ -29,9 +53,15 @@ class ModelEvaluator:
 
         return report, conf_matrix
 
-    def plot_training_history(self, history, title="Training History"):
+    def plot_training_history(
+        self, history: History, title: str = "Training History"
+    ) -> None:
         """
-        Plot and save training and validation accuracy and loss.
+        Plot and save the training and validation accuracy and loss over epochs.
+
+        Args:
+            history (History): The training history object containing accuracy and loss values.
+            title (str): The title for the plot.
         """
         plt.figure(figsize=(12, 6))
 
@@ -57,9 +87,13 @@ class ModelEvaluator:
         plt.savefig(f"{self.logs_dir}/{title}_metrics.png")
         plt.show()
 
-    def plot_mia_results(self, mia_before, mia_after):
+    def plot_mia_results(self, mia_before: float, mia_after: float) -> None:
         """
-        Plot MIA accuracy before and after privacy preservation.
+        Plot the Membership Inference Attack (MIA) accuracy before and after privacy preservation.
+
+        Args:
+            mia_before (float): The MIA accuracy before privacy preservation.
+            mia_after (float): The MIA accuracy after privacy preservation.
         """
         plt.figure(figsize=(8, 6))
         plt.bar(
