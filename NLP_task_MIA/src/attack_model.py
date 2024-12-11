@@ -1,13 +1,7 @@
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-import logging
+from loguru import logger
 from typing import Tuple
-
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
-logger = logging.getLogger(__name__)
 
 
 class MembershipInferenceAttack:
