@@ -22,6 +22,8 @@ dependencies:
   - privacy-preserving-models=0.1.0  # For applying privacy preservation
   - random-forest=0.4.0  # For RandomForest classifier
   - loguru-0.7.3
-  - pydantic
+   - pydantic=2.7
+  - pydantic-settings=2.0
+  - python-dotenv
   - pip:
       - mia= 0.1.2  
