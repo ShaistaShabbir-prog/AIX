@@ -21,5 +21,7 @@ dependencies:
   - pytorch=1.12.1
   - privacy-preserving-models=0.1.0  # For applying privacy preservation
   - random-forest=0.4.0  # For RandomForest classifier
+  - loguru-0.7.3
+  - pydantic
   - pip:
       - mia= 0.1.2  
