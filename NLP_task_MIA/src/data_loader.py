@@ -4,6 +4,8 @@ from tensorflow.keras.preprocessing import sequence
 MAX_FEATURES = 20000
 MAXLEN = 100
 
+
+# TODO: maybe i should move these two var to a util/settings. Can we use pydantic here?
 def load_data():
     # Load the IMDB dataset
     (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=MAX_FEATURES)
