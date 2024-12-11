@@ -77,6 +77,7 @@ NLP_task_MIA/
 │   ├── lstm_model.py           # Script for defining and training the LSTM model
 │   ├── attack_model.py         # Script for defining and performing Membership Inference Attack (MIA)
 │   └── privacy_preservation.py # Script for applying privacy-preserving techniques (e.g., Differential Privacy)
+│   └── model_evaluator.py # different evaluations with visualizations 
 │
 ├── notebooks/
 │   └── project_notebook.ipynb  # Jupyter notebook for experiments and data analysis
