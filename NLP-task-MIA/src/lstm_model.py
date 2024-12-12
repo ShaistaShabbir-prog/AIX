@@ -3,7 +3,7 @@ from tensorflow.keras.layers import LSTM, Dense, Embedding
 from loguru import logger
 import numpy as np
 from typing import Tuple
-from NLP_task_MIA.utils.settings import Settings
+from settings import Settings
 
 
 class LSTMModel:
