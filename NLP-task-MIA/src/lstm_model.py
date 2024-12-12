@@ -47,7 +47,7 @@ class LSTMModel:
         return model
 
     def train(
-        self, x_train: np.ndarray, y_train: np.ndarray, return_history: bool = False
+        self, x_train: np.ndarray, y_train: np.ndarray, x_val, y_val,return_history: bool = False
     ) -> Tuple[Sequential, dict]:
         """
         Train the LSTM model on the given training data.
@@ -64,7 +64,7 @@ class LSTMModel:
         if self.model is None:
             self.model = self.build()
 
-        history = self.model.fit(x_train, y_train, epochs=3, batch_size=64)
+        history = self.model.fit(x_train, y_train,validation_data=(x_val, y_val), epochs=3, batch_size=64)
 
         logger.info(f"Training completed. Model history: {history.history}")
-        return (self.model, history.history) if return_history else self.model
+        return self.model, history
