@@ -2,7 +2,7 @@ from tensorflow.keras.datasets import imdb
 from tensorflow.keras.preprocessing import sequence
 from typing import Tuple
 import numpy as np
-from utils.settings import settings
+from settings import settings
 
 
 def load_data() -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
