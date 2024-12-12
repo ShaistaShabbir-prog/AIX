@@ -19,12 +19,13 @@ dependencies:
   - scikit-image=0.19.3
   - opencv=4.5.3
   - pytorch=1.12.1
-  - privacy-preserving-models=0.1.0  # For applying privacy preservation
-  - random-forest=0.4.0  # For RandomForest classifier
-  - loguru-0.7.3
-   - pydantic=2.7
+  - loguru=0.7.3
+  - pydantic=2.7
   - pydantic-settings=2.0
   - python-dotenv
   - ipykernel
+  - pip
   - pip:
-      - mia= 0.1.2  
+      - mia==0.1.2
+      - random-forest-mc==0.4.0
+      - privacy-preserving-models==0.1.0 # in doubt yet
