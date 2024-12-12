@@ -3,7 +3,7 @@ from tensorflow.keras.layers import LSTM, Dense, Embedding
 from loguru import logger
 import numpy as np
 from typing import Tuple
-from utils.settings import settings
+from NLP_task_MIA.utils.settings import Settings
 
 
 class LSTMModel:
@@ -33,6 +33,7 @@ class LSTMModel:
             Sequential: The compiled Keras model.
         """
         logger.info("Building the LSTM model...")
+        settings = Settings()
         model = Sequential()
         model.add(Embedding(settings.MAX_FEATURES, 128, input_length=settings.MAXLEN))
         model.add(LSTM(128, dropout=0.2, recurrent_dropout=0.2))
