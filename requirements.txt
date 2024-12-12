@@ -17,6 +17,7 @@ loguru==0.7.3
 pydantic==2.7
 python-dotenv==0.20.0
 ipykernel==6.15.2
+opencv-python-headless
 
 # Additional dependencies using pip
 mia==0.1.2
