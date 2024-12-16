@@ -35,8 +35,8 @@ class MembershipInferenceAttack:
             Tuple[np.ndarray, np.ndarray]: The confidences for the training and testing data.
         """
         # Get the predicted probabilities for training and testing data
-        train_confidences = np.max(target_model.predict_proba(x_train), axis=1)
-        test_confidences = np.max(target_model.predict_proba(x_test), axis=1)
+        train_confidences = np.max(target_model.predict(x_train), axis=1)
+        test_confidences = np.max(target_model.predict(x_test), axis=1)
 
         logger.info(
             f"Collected confidences: train={train_confidences.shape[0]}, test={test_confidences.shape[0]}"
