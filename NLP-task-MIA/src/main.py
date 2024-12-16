@@ -31,7 +31,7 @@ def main() -> None:
 
     # 1. Train LSTM model on IMDB data
     lstm_model = LSTMModel()
-    base_model, base_history = lstm_model.train(x_train, y_train,x_test,y_test,  return_history=True)
+    base_model, base_history = lstm_model.train(x_train, y_train,x_test,y_test, return_history=True)
 
     logger.info("Baseline model training complete. Saving and plotting metrics.")
 
@@ -46,6 +46,7 @@ def main() -> None:
     mia = MembershipInferenceAttack()
     train_conf, test_conf = mia.collect_confidences(base_model, x_train, x_test)
     mia_accuracy_before = mia.train_attack_model(train_conf, test_conf, y_train, y_test)
+    mia_accuracy_before, _ = mia_accuracy_before
     logger.info(f"MIA Accuracy before privacy preservation: {mia_accuracy_before:.4f}")
 
     # 3. Apply regularization and early stopping
@@ -72,6 +73,7 @@ def main() -> None:
     mia_accuracy_after = mia.train_attack_model(
         train_conf_dp, test_conf_dp, y_train, y_test
     )
+    mia_accuracy_after, _ = mia_accuracy_after 
     logger.info(f"MIA Accuracy after applying regularization: {mia_accuracy_after:.4f}")
 
     # 5. Compare results and visualize
@@ -102,4 +104,4 @@ def main() -> None:
 if __name__ == "__main__":
     logger.info("Starting the main process.")
     main()
-    logger.info("Main process complete.")
+    logger.info("Main process completed.")
