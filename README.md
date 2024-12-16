@@ -14,7 +14,7 @@ Ensure you have the following tools and libraries:
 
 ### Required Packages
 
-To run the project, we have a `requirement.txt` file that contains all the necessary packages for the environment. You can create the environment using this YAML file.
+To run the project, we have a `requirement.txt` file that contains all the necessary packages for the environment. You can create the environment using this requirements file.
 
 ### Steps to Run the Project
 
