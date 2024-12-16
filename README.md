@@ -66,26 +66,81 @@ To run the project, we have a `requirement.txt` file that contains all the neces
 
    
 7. **Current logs are in notebook folder**:
-   
-The model training completed with 3 epochs. 
-The accuracy improved over the epochs, and the validation accuracy fluctuated, showing a peak at 84.76% in epoch 1 and then decreased to ~81% in epoch 3.
-The model’s training and validation loss decreased over the epochs, indicating that the model is learning effectively.
-**Final Accuracy**: ~91.76% on the training set and 81.90% on the validation set, which seems reasonable for a baseline model. 
-**Base Model Classification Report:**
-              precision    recall  f1-score   support
-           0     0.8252    0.8094    0.8172     12500
-           1     0.8130    0.8286    0.8207     12500
-    accuracy                         0.8190     25000
-**Classification Report**: The model has a good balance between precision, recall, and F1-score. The overall accuracy is 81.90%.
-**Confusion Matrix**: This indicates that the model correctly classified 10,117 positive samples and 10,357 negative samples, with misclassifications of 2,383 negative samples as positive and 2,143 positive samples as negative.
-    **MIA Accuracy before privacy preservation**: 1.0000
-    **MIA ROC-AUC**: 1.0000
-The Membership Inference Attack (MIA) successfully achieved 100% accuracy on the baseline model. This indicates that the model is overfitting the training data, making it easy for the MIA to distinguish between members and non-members of the training set. This result is typical when models are overly confident in their predictions and can be used to evaluate the effectiveness of privacy-preserving techniques. Here we have tried to implement some privacy preservations to check whether MIA still performs well wether uility drops,
-with current setup differential privacy was planned to implement but faced some import error which is not updated in official documentation as well, needed digging and more time. We tried to try regularization and early stopping to prevent model from over fitting, results clearly show that model performance could go above ~50% and model started underfiiting. Surprisiling MIA still managed to achieve 
-    **MIA Accuracy after privacy preservation**: 1.0000
-    **MIA ROC-AUC**: 1.0000
-which either shows the model is expsoing alots of information or the regularization didn't perform well to apply enough preservations here.
-There are several other techniques which could be used to check the privacy preservation and MIA performance after this but currently time is a constraint for us.
+https://github.com/ShaistaShabbir-prog/AIX/blob/dev/NLP-task-MIA%20/notebooks/MIA_TASK.ipynb
+---
+
+# Model Training and Evaluation Summary
+
+## **Model Training Results**
+- The model training completed successfully in **3 epochs**.  
+- **Accuracy Trends**:  
+  - The training accuracy steadily improved over the epochs, reaching a final accuracy of **91.76%**.  
+  - The validation accuracy peaked at **84.76%** during epoch 1 and then decreased to approximately **81%** by epoch 3.  
+
+- **Loss Trends**:  
+  - Both training and validation loss decreased over the epochs, suggesting effective learning by the model.  
+
+## **Final Performance Metrics**
+- **Training Accuracy**: ~91.76%  
+- **Validation Accuracy**: ~81.90%  
+
+### **Base Model Classification Report**  
+| Label | Precision | Recall | F1-Score | Support |
+|-------|-----------|--------|----------|---------|
+| 0     | 0.8252    | 0.8094 | 0.8172   | 12,500  |
+| 1     | 0.8130    | 0.8286 | 0.8207   | 12,500  |
+| **Accuracy** | **-**     | **-**    | **0.8190** | **25,000** |
+
+- The classification report indicates a good balance between precision, recall, and F1-score, with an overall accuracy of **81.90%**.  
+
+### **Confusion Matrix**
+The confusion matrix shows:  
+- Correctly classified **10,117 positive samples** and **10,357 negative samples**.  
+- Misclassifications:  
+  - **2,383 negative samples** were classified as positive.  
+  - **2,143 positive samples** were classified as negative.  
+
+---
+
+## **Membership Inference Attack (MIA) Analysis**
+
+### **Baseline Model Results**
+- **MIA Accuracy (Before Privacy Preservation)**: **1.0000**  
+- **MIA ROC-AUC**: **1.0000**  
+
+The MIA achieved 100% accuracy on the baseline model, indicating severe overfitting. This overfitting makes it easy for the MIA to distinguish between members and non-members of the training set. The model's high confidence in predictions reveals too much information, undermining privacy.  
+
+---
+
+## **Privacy Preservation Attempts**
+To mitigate the overfitting and improve privacy, the following methods were attempted:  
+1. **Regularization**  
+2. **Early Stopping**
+
+### **Results After Privacy Preservation**  
+- **MIA Accuracy (After Privacy Preservation)**: **1.0000**  
+- **MIA ROC-AUC**: **1.0000**  
+
+Despite the interventions, MIA performance remained unchanged, suggesting:  
+1. The model is still exposing a significant amount of information.  
+2. The applied regularization techniques were insufficient to achieve meaningful privacy preservation.  
+
+---
+
+## **Challenges and Future Work**
+- **Differential Privacy Implementation**:  
+  Efforts to implement differential privacy were hindered by unresolved import errors in the official documentation. Further exploration and debugging are required.  
+
+- **Regularization Impact**:  
+  While regularization and early stopping reduced the model’s performance to avoid overfitting, they may have caused underfitting, as seen in the drop in validation accuracy.  
+
+- **Future Directions**:  
+  - Experiment with advanced privacy-preserving techniques such as differential privacy, adversarial regularization, or noise injection.  
+  - Conduct more detailed experiments to evaluate the trade-offs between utility and privacy.  
+
+Time constraints limited the exploration of additional privacy-preserving approaches, but the results highlight the critical need for robust techniques to address MIA vulnerabilities.  
+
+--- 
 
 
 
