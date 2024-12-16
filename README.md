@@ -24,12 +24,13 @@ To run the project, we have a `requirement.txt` file that contains all the neces
          https://github.com/ShaistaShabbir-prog/AIX.git
     ```
 
-2. **Create a Conda environment**:
+2. **Create a virtual environment**:
 
-    To install all required dependencies, use the provided `environment.yml` file.
+    To install all required dependencies, use the provided `requirements.txt` file.
 
     ```bash
-    conda env create -f environment.yml
+    pip install -r requirements.txt
+    python3 -m venv nlp_task_mia_env
     ```
 
 3. **Activate the environment**:
@@ -37,7 +38,8 @@ To run the project, we have a `requirement.txt` file that contains all the neces
     After the environment is created, activate it using:
 
     ```bash
-    conda activate nlp_task_mia_env
+    
+    source nlp_task_mia_env/bin/activate
     ```
 
 4. **Run the Project**:
@@ -49,10 +51,10 @@ To run the project, we have a `requirement.txt` file that contains all the neces
     ```
 
     This will:
-    - Load the IMDB dataset.
+    - Load the IMDB dataset https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews/data.
     - Train an LSTM model on the dataset.
     - Perform a Membership Inference Attack (MIA)by training a shadow model.
-    - Apply privacy-preserving techniques (e.g., L2-regularization, early stopping, adversarial_training, cross validation etc ).
+    - Apply privacy-preserving techniques (e.g., L2-regularization, early stopping, adversarial_training, cross validation etc).
     - Re-run MIA and compare the results to assess the effectiveness of the privacy measures.
 
 5. **Monitor Training and Results**:
