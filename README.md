@@ -29,8 +29,9 @@ To run the project, we have a `requirement.txt` file that contains all the neces
     To install all required dependencies, use the provided `requirements.txt` file.
 
     ```bash
-    pip install -r requirements.txt
     python3 -m venv nlp_task_mia_env
+    pip install -r requirements.txt
+    
     ```
 
 3. **Activate the environment**:
