@@ -62,8 +62,25 @@ To run the project, we have a `requirement.txt` file that contains all the neces
     The LSTM model will output progress during training, and the Membership Inference Attack results will be displayed in the terminal and saved to log files, you can view these during runtime.
 
     You can analyze the accuracy, loss, and the impact of privacy techniques by reviewing the results saved during the MIA comparisons.
-
-
+6. **Current logs are in notebook folder**:
+The model training completed with 3 epochs. The accuracy improved over the epochs, and the validation accuracy fluctuated, showing a peak at 84.76% in epoch 1 and then decreased to ~81% in epoch 3.
+The model’s training and validation loss decreased over the epochs, indicating that the model is learning effectively.
+Final Accuracy: ~91.76% on the training set and 81.90% on the validation set, which seems reasonable for a baseline model. 
+Base Model Classification Report:
+              precision    recall  f1-score   support
+           0     0.8252    0.8094    0.8172     12500
+           1     0.8130    0.8286    0.8207     12500
+    accuracy                         0.8190     25000
+Classification Report: The model has a good balance between precision, recall, and F1-score. The overall accuracy is 81.90%.
+Confusion Matrix: This indicates that the model correctly classified 10,117 positive samples and 10,357 negative samples, with misclassifications of 2,383 negative samples as positive and 2,143 positive samples as negative.
+    MIA Accuracy before privacy preservation: 1.0000
+    MIA ROC-AUC: 1.0000
+The Membership Inference Attack (MIA) successfully achieved 100% accuracy on the baseline model. This indicates that the model is overfitting the training data, making it easy for the MIA to distinguish between members and non-members of the training set. This result is typical when models are overly confident in their predictions and can be used to evaluate the effectiveness of privacy-preserving techniques. Here we have tried to implement some privacy preservations to check whether MIA still performs well wether uility drops,
+with current setup differential privacy was planned to implement but faced some import error which is not updated in official documentation as well, needed digging and more time. We tried to try regularization and early stopping to prevent model from over fitting, results clearly show that model performance could go above ~50% and model started underfiiting. Surprisiling MIA still managed to achieve 
+    MIA Accuracy after privacy preservation: 1.0000
+    MIA ROC-AUC: 1.0000
+which either shows the model is expsoing alots of information or the regularization didn't perform well to apply enough preservations here.
+There are several other techniques which could be used to check the privacy preservation and MIA performance after this but currently time is a constraint for us.
 ### File Structure
 
 The project follows this directory structure:
