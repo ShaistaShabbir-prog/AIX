@@ -11,11 +11,10 @@ This project demonstrates the process of performing a Membership Inference Attac
 Ensure you have the following tools and libraries:
 
 - [Python 3.10](https://www.python.org/downloads/)
-- [Anaconda](https://www.anaconda.com/products/individual) (for managing dependencies and environments)
 
 ### Required Packages
 
-To run the project, we have a `environment.yml` file that contains all the necessary packages for the environment. You can create the environment using this YAML file.
+To run the project, we have a `requirement.txt` file that contains all the necessary packages for the environment. You can create the environment using this YAML file.
 
 ### Steps to Run the Project
 
@@ -52,15 +51,16 @@ To run the project, we have a `environment.yml` file that contains all the neces
     This will:
     - Load the IMDB dataset.
     - Train an LSTM model on the dataset.
-    - Perform a Membership Inference Attack (MIA).
-    - Apply privacy-preserving techniques (e.g., differential privacy, data perturbation).
+    - Perform a Membership Inference Attack (MIA)by training a shadow model.
+    - Apply privacy-preserving techniques (e.g., L2-regularization, early stopping, adversarial_training, cross validation etc ).
     - Re-run MIA and compare the results to assess the effectiveness of the privacy measures.
 
 5. **Monitor Training and Results**:
 
-    The LSTM model will output progress during training, and the Membership Inference Attack results will be displayed in the terminal or saved to CSV/JSON files depending on your configuration.
+    The LSTM model will output progress during training, and the Membership Inference Attack results will be displayed in the terminal and saved to log files, you can view these during runtime.
 
     You can analyze the accuracy, loss, and the impact of privacy techniques by reviewing the results saved during the MIA comparisons.
+
 
 ### File Structure
 
@@ -78,15 +78,15 @@ NLP_task_MIA/
 │   ├── attack_model.py         # Script for defining and performing Membership Inference Attack (MIA)
 │   └── privacy_preservation.py # Script for applying privacy-preserving techniques (e.g., Differential Privacy)
 │   └── model_evaluator.py # different evaluations with visualizations 
+│   ├── logs/
+│    │   ├── training_logs.txt       # Logs for training LSTM model
+│    │   ├── attack_logs.txt         # Logs for Membership Inference Attack
+│    │   └── results_comparison.txt  # Logs comparing results before and after privacy-preservation
 │
 ├── notebooks/
-│   └── project_notebook.ipynb  # Jupyter notebook for experiments and data analysis
+│   └──MIA_TASK.ipynb  # Jupyter notebook for experiments and data analysis
 │
-├── logs/
-│   ├── training_logs.txt       # Logs for training LSTM model
-│   ├── attack_logs.txt         # Logs for Membership Inference Attack
-│   └── results_comparison.txt  # Logs comparing results before and after privacy-preservation
 │
-├── environment.yml            # Python dependencies
+├── requirements.txt            # Python dependencies
 └── README.md                   # Project description and instructions
 ```
