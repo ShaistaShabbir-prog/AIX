@@ -1,5 +1,6 @@
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import roc_auc_score
 from loguru import logger
 from typing import Tuple
 
@@ -17,7 +18,7 @@ class MembershipInferenceAttack:
         Initializes the MembershipInferenceAttack class with a Random Forest classifier
         for training the attack model.
         """
-        self.attack_model = RandomForestClassifier()
+        self.attack_model = RandomForestClassifier(n_estimators=100, random_state=42)
 
     def collect_confidences(
         self, target_model, x_train: np.ndarray, x_test: np.ndarray
@@ -34,8 +35,8 @@ class MembershipInferenceAttack:
             Tuple[np.ndarray, np.ndarray]: The confidences for the training and testing data.
         """
         # Get the predicted probabilities for training and testing data
-        train_confidences = np.max(target_model.predict_proba(x_train), axis=1)
-        test_confidences = np.max(target_model.predict_proba(x_test), axis=1)
+        train_confidences = np.max(target_model.predict(x_train), axis=1)
+        test_confidences = np.max(target_model.predict(x_test), axis=1)
 
         logger.info(
             f"Collected confidences: train={train_confidences.shape[0]}, test={test_confidences.shape[0]}"
@@ -48,7 +49,7 @@ class MembershipInferenceAttack:
         test_confidences: np.ndarray,
         y_train: np.ndarray,
         y_test: np.ndarray,
-    ) -> float:
+    ) -> Tuple[float, float]:
         """
         Train the Membership Inference Attack model using the collected confidences and true labels.
 
@@ -59,18 +60,33 @@ class MembershipInferenceAttack:
             y_test (np.ndarray): The true labels for the testing data.
 
         Returns:
-            float: The accuracy of the attack model on the testing data.
+            Tuple[float, float]: The accuracy and ROC-AUC score of the attack model on the testing data.
         """
         # Combine confidences and true labels for training
         X_train = np.column_stack([train_confidences, y_train])
         X_test = np.column_stack([test_confidences, y_test])
 
-        # Train the attack model
         logger.info("Training the attack model...")
         self.attack_model.fit(X_train, y_train)
 
         # Evaluate attack model on the test set
         attack_accuracy = self.attack_model.score(X_test, y_test)
-        logger.info(f"MIA Accuracy: {attack_accuracy:.4f}")
 
-        return attack_accuracy
+        # Ensure predict_proba works without indexing error
+        try:
+            y_pred_proba = self.attack_model.predict_proba(X_test)[:, 1]  # Positive class probabilities
+        except IndexError:
+            logger.warning("Model returned only one class; cannot compute ROC-AUC.")
+            y_pred_proba = np.zeros_like(y_test)  # Assign zero probabilities for uniformity
+
+        # Calculate ROC-AUC only if probabilities are valid
+        if len(np.unique(y_test)) > 1:
+            roc_auc = roc_auc_score(y_test, y_pred_proba)
+        else:
+            roc_auc = float("nan")  
+            logger.warning("ROC-AUC is undefined for a single-class test set.")
+
+        logger.info(f"MIA Accuracy: {attack_accuracy:.4f}")
+        logger.info(f"MIA ROC-AUC: {roc_auc:.4f}")
+
+        return attack_accuracy, roc_auc

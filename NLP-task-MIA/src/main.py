@@ -5,6 +5,7 @@ from privacy_preservation import apply_regularization_and_early_stopping
 from data_loader import load_data
 from model_evaluator import ModelEvaluator
 from loguru import logger
+import os
 
 
 def main() -> None:
@@ -30,7 +31,7 @@ def main() -> None:
 
     # 1. Train LSTM model on IMDB data
     lstm_model = LSTMModel()
-    base_model, base_history = lstm_model.train(x_train, y_train, return_history=True)
+    base_model, base_history = lstm_model.train(x_train, y_train,x_test,y_test, return_history=True)
 
     logger.info("Baseline model training complete. Saving and plotting metrics.")
 
@@ -45,6 +46,7 @@ def main() -> None:
     mia = MembershipInferenceAttack()
     train_conf, test_conf = mia.collect_confidences(base_model, x_train, x_test)
     mia_accuracy_before = mia.train_attack_model(train_conf, test_conf, y_train, y_test)
+    mia_accuracy_before, _ = mia_accuracy_before
     logger.info(f"MIA Accuracy before privacy preservation: {mia_accuracy_before:.4f}")
 
     # 3. Apply regularization and early stopping
@@ -71,19 +73,35 @@ def main() -> None:
     mia_accuracy_after = mia.train_attack_model(
         train_conf_dp, test_conf_dp, y_train, y_test
     )
+    mia_accuracy_after, _ = mia_accuracy_after 
     logger.info(f"MIA Accuracy after applying regularization: {mia_accuracy_after:.4f}")
 
     # 5. Compare results and visualize
     logger.info("Comparing MIA accuracy results and visualizing.")
     evaluator.plot_mia_results(mia_accuracy_before, mia_accuracy_after)
 
-    with open("logs/results_comparison.txt", "w") as log:
-        log.write(f"MIA Accuracy before regularization: {mia_accuracy_before:.4f}\n")
-        log.write(f"MIA Accuracy after regularization: {mia_accuracy_after:.4f}\n")
-    logger.info("Results comparison saved to logs.")
+    results_file_path = "logs/results_comparison.txt"
+    try:
+        # Attempt to open the file for writing
+        with open(results_file_path, "w") as log:
+            log.write(
+                f"MIA Accuracy before regularization: {mia_accuracy_before:.4f}\n"
+            )
+            log.write(f"MIA Accuracy after regularization: {mia_accuracy_after:.4f}\n")
+        logger.info("Results comparison saved to logs.")
+    except FileNotFoundError:
+        # Handle missing directory
+        logger.warning("Logs directory not found. Creating logs directory.")
+        os.makedirs("logs", exist_ok=True)
+        with open(results_file_path, "w") as log:
+            log.write(
+                f"MIA Accuracy before regularization: {mia_accuracy_before:.4f}\n"
+            )
+            log.write(f"MIA Accuracy after regularization: {mia_accuracy_after:.4f}\n")
+        logger.info("Results comparison saved to logs after creating the directory.")
 
 
 if __name__ == "__main__":
     logger.info("Starting the main process.")
     main()
-    logger.info("Main process complete.")
+    logger.info("Main process completed.")

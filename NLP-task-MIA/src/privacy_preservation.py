@@ -156,7 +156,7 @@ def calibrate_model(model: Model, x_val: np.ndarray, y_val: np.ndarray) -> np.nd
     """
     # Calibrate model (using temperature scaling)
     logits = model.predict(x_val)
-    temperature = 2.0  # Set temperature value
+    temperature = 2.0  # tune this value
     logits = logits / temperature
     predictions = tf.nn.softmax(logits)
     return predictions
