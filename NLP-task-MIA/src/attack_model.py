@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from loguru import logger
 from typing import Tuple
+from sklearn.metrics import roc_auc_score
 
 
 class MembershipInferenceAttack:
@@ -48,7 +49,7 @@ class MembershipInferenceAttack:
         test_confidences: np.ndarray,
         y_train: np.ndarray,
         y_test: np.ndarray,
-    ) -> float:
+    ) -> Tuple[float, float]:
         """
         Train the Membership Inference Attack model using the collected confidences and true labels.
 
@@ -59,7 +60,7 @@ class MembershipInferenceAttack:
             y_test (np.ndarray): The true labels for the testing data.
 
         Returns:
-            float: The accuracy of the attack model on the testing data.
+            Tuple[float, float]: The accuracy and ROC-AUC score of the attack model on the testing data.
         """
         # Combine confidences and true labels for training
         X_train = np.column_stack([train_confidences, y_train])
@@ -71,6 +72,10 @@ class MembershipInferenceAttack:
 
         # Evaluate attack model on the test set
         attack_accuracy = self.attack_model.score(X_test, y_test)
-        logger.info(f"MIA Accuracy: {attack_accuracy:.4f}")
+        y_pred_proba = self.attack_model.predict_proba(X_test)[:, 1]
+        roc_auc = roc_auc_score(y_test, y_pred_proba)
 
-        return attack_accuracy
+        logger.info(f"MIA Accuracy: {attack_accuracy:.4f}")
+        logger.info(f"MIA ROC-AUC: {roc_auc:.4f}")
+
+        return attack_accuracy, roc_auc
