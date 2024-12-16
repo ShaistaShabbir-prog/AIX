@@ -31,7 +31,7 @@ def main() -> None:
 
     # 1. Train LSTM model on IMDB data
     lstm_model = LSTMModel()
-    base_model, base_history = lstm_model.train(x_train, y_train, return_history=True)
+    base_model, base_history = lstm_model.train(x_train, y_train,x_test,y_test,  return_history=True)
 
     logger.info("Baseline model training complete. Saving and plotting metrics.")
 
