@@ -72,7 +72,7 @@ class MembershipInferenceAttack:
 
         # Evaluate attack model on the test set
         attack_accuracy = self.attack_model.score(X_test, y_test)
-        y_pred_proba = self.attack_model.predict_proba(X_test)[:, 1]
+        y_pred_proba = self.attack_model.predict(X_test)[:, 1]
         roc_auc = roc_auc_score(y_test, y_pred_proba)
 
         logger.info(f"MIA Accuracy: {attack_accuracy:.4f}")
