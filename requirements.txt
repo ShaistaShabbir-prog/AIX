@@ -15,11 +15,17 @@ opencv-python==4.5.3.56
 pytorch==1.12.1
 loguru==0.7.3
 pydantic==2.7
-python-dotenv==0.20.0
+python-dotenv==1.0.1
+pydantic-settings-2.7.0
 ipykernel==6.15.2
 opencv-python-headless
-
+TensorFlow-privacy-0.9.0
+dp-accounting-0.4.3 
+packaging-22.0 
+tensorflow-estimator-2.15.0 
+tensorflow-probability-0.22.1
 # Additional dependencies using pip
 mia==0.1.2
 random-forest-mc==0.4.0
 privacy-preserving-models==0.1.0
+
