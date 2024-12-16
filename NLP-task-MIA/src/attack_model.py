@@ -1,8 +1,8 @@
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import roc_auc_score
 from loguru import logger
 from typing import Tuple
-from sklearn.metrics import roc_auc_score
 
 
 class MembershipInferenceAttack:
@@ -18,7 +18,7 @@ class MembershipInferenceAttack:
         Initializes the MembershipInferenceAttack class with a Random Forest classifier
         for training the attack model.
         """
-        self.attack_model = RandomForestClassifier()
+        self.attack_model = RandomForestClassifier(n_estimators=100, random_state=42)
 
     def collect_confidences(
         self, target_model, x_train: np.ndarray, x_test: np.ndarray
@@ -66,14 +66,25 @@ class MembershipInferenceAttack:
         X_train = np.column_stack([train_confidences, y_train])
         X_test = np.column_stack([test_confidences, y_test])
 
-        # Train the attack model
         logger.info("Training the attack model...")
         self.attack_model.fit(X_train, y_train)
 
         # Evaluate attack model on the test set
         attack_accuracy = self.attack_model.score(X_test, y_test)
-        y_pred_proba = self.attack_model.predict(X_test)[:, 1]
-        roc_auc = roc_auc_score(y_test, y_pred_proba)
+
+        # Ensure predict_proba works without indexing error
+        try:
+            y_pred_proba = self.attack_model.predict_proba(X_test)[:, 1]  # Positive class probabilities
+        except IndexError:
+            logger.warning("Model returned only one class; cannot compute ROC-AUC.")
+            y_pred_proba = np.zeros_like(y_test)  # Assign zero probabilities for uniformity
+
+        # Calculate ROC-AUC only if probabilities are valid
+        if len(np.unique(y_test)) > 1:
+            roc_auc = roc_auc_score(y_test, y_pred_proba)
+        else:
+            roc_auc = float("nan")  
+            logger.warning("ROC-AUC is undefined for a single-class test set.")
 
         logger.info(f"MIA Accuracy: {attack_accuracy:.4f}")
         logger.info(f"MIA ROC-AUC: {roc_auc:.4f}")
