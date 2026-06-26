@@ -1,0 +1,10 @@
+services:
+  mia-demo:
+    build: .
+    ports:
+      - "8501:8501"
+    environment:
+      - TF_CPP_MIN_LOG_LEVEL=3
+    volumes:
+      - ./results:/app/results
+      - ./models:/app/models
